@@ -1,0 +1,47 @@
+---
+import { menuMain } from "~/data/menus";
+const currentYear = new Date().getFullYear();
+import { siteName } from "~/data/config";
+import IconFacebook from "~/components/icons/ButtonFacebook.astro";
+import IconInstagram from "~/components/icons/ButtonInstagram.astro";
+// import IconX from "~/components/icons/ButtonX.astro"
+import IconTikTok from "~/components/icons/ButtonTikTok.astro";
+// import IconWhatsapp from "~/components/icons/ButtonWhatsapp.astro";
+---
+
+<footer class="bg-brand-green text-white">
+	<div class="container pt-16 pb-8">
+		<nav
+			class="flex sm:flex-row items-center justify-center gap-x-2 gap-y-3 font-medium mt-6"
+			aria-label="Footer"
+		>
+			{
+				menuMain.map((item) => (
+					<a href={item.url} class="hover:underline">
+						{item.name}
+					</a>
+				))
+			}
+		</nav>
+		<div
+			class="flex sm:flex-row items-center justify-center gap-x-2 gap-y-3 font-medium mt-6"
+		>
+			<IconFacebook />
+			<IconInstagram />
+			<!-- <IconWhatsapp /> -->
+			<!-- <IconX/> -->
+			<IconTikTok />
+		</div>
+		<p class="mt-10 text-center text-sm">
+			&copy; {currentYear}
+			Designed by:
+			<a class="underline" href="https://adelabdulazeem.netlify.app/"
+				>{siteName}</a
+			> | All rights reserved.
+			<!-- <a
+				class="underline"
+				href="/privacy-policy">Privacy policy</a
+			> -->
+		</p>
+	</div>
+</footer>

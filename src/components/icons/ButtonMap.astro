@@ -1,0 +1,59 @@
+---
+import IconLocation from "~/assets/icons/location.svg";
+
+const branches = [
+	{ name: "فرع مدينة نصر", url: "https://share.google/rzxrcnGAp5tj5iHts" },
+	{ name: "فرع التجمع", url: "https://share.google/gLsKZQJT3FMt2rCkf" },
+	{
+		name: "فرع القصر العيني",
+		url: "https://share.google/jJRmJUhs2UKjNT8YS",
+	},
+];
+---
+
+<div class="relative group inline-block text-right">
+	<!-- Button -->
+	<button
+		class="flex items-center gap-2 text-base/6 font-semibold px-4 py-2 rounded-md transition-colors duration-300 focus:outline-none hover:text-brand-green focus:text-brand-green"
+	>
+		<IconLocation class="w-5 h-5 text-red-500" />
+		<span>اختر الفرع</span>
+
+		<svg
+			class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180 group-focus-within:rotate-180"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			viewBox="0 0 24 24"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<path
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				d="M19 9l-7 7-7-7"></path>
+		</svg>
+	</button>
+
+	<!-- Dropdown Menu -->
+	<ul
+		class="absolute left-0 mt-2 w-52 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 opacity-0 invisible
+		group-hover:opacity-100 group-hover:visible
+		group-focus-within:opacity-100 group-focus-within:visible
+		transition-all duration-200 z-10"
+	>
+		{
+			branches.map((branch) => (
+				<li key={branch.name}>
+					<a
+						href={branch.url}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="block rt px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition duration-150"
+					>
+						{branch.name}
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</div>
