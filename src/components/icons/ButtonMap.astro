@@ -2,16 +2,10 @@
 import IconLocation from "~/assets/icons/location.svg";
 
 const branches = [
+	{ name: "فرع مدينة نصر", url: "https://share.google/rzxrcnGAp5tj5iHts" },
+	{ name: "فرع التجمع", url: "https://share.google/gLsKZQJT3FMt2rCkf" },
 	{
-		name: "فرع مدينة نصر",
-		url: "https://share.google/rzxrcnGAp5tj5iHts",
-	},
-	{
-		name: "فرع التجمع",
-		url: "https://share.google/gLsKZQJT3FMt2rCkf",
-	},
-	{
-		name: "فرع  شارع القصر العيني",
+		name: "فرع شارع القصر العيني",
 		url: "https://share.google/jJRmJUhs2UKjNT8YS",
 	},
 ];
@@ -20,13 +14,13 @@ const branches = [
 <div class="relative group inline-block text-left">
 	<!-- Button -->
 	<button
-		class="flex items-center gap-2 text-base/6 font-semibold px-4 py-2 rounded-md transition-colors duration-300 focus:outline-none hover:text-brand-green"
+		class="flex items-center gap-2 text-base/6 font-semibold px-4 py-2 rounded-md transition-colors duration-300 focus:outline-none hover:text-brand-green focus:text-brand-green"
 	>
 		<IconLocation class="w-5 h-5 text-red-500" />
 		<span>اختر الفرع</span>
 
 		<svg
-			class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180"
+			class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180 group-focus-within:rotate-180"
 			fill="none"
 			stroke="currentColor"
 			stroke-width="2"
@@ -42,7 +36,10 @@ const branches = [
 
 	<!-- Dropdown Menu -->
 	<ul
-		class="absolute left-0 mt-2 w-52 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10"
+		class="absolute left-0 mt-2 w-52 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 opacity-0 invisible
+		group-hover:opacity-100 group-hover:visible
+		group-focus-within:opacity-100 group-focus-within:visible
+		transition-all duration-200 z-10"
 	>
 		{
 			branches.map((branch) => (
