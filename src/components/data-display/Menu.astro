@@ -1,0 +1,189 @@
+---
+import { getCollection } from "astro:content";
+import { siteLang, siteCurrency } from "~/data/config";
+
+const plates = await getCollection("plates");
+const siteLangFormat = siteLang.replace("_", "-");
+---
+
+<!-- Quick Nav -->
+<div id="plate-nav-wrapper" class="mb-10 sticky top-8 z-10">
+	<nav class="bg-brand-green text-white rounded-full max-w-3xl mx-auto">
+		<div class="swiper-plates w-auto overflow-hidden">
+			<ul id="plate-nav" class="px-2.5 py-3 swiper-wrapper">
+				{plates.map((plate) => (
+					<li class="swiper-slide !w-auto last:ml-5">
+						<a
+							href={`#${plate.data.slug}`}
+							class="rounded-full px-2 py-1 transition font-medium select-none"
+							data-category-link={plate.data.slug}
+						>
+							{plate.data.prettyName}
+						</a>
+					</li>
+				))}
+			</ul>
+		</div>
+	</nav>
+</div>
+
+<!-- Plates -->
+<div class="grid grid-cols-1 gap-y-16 justify-items-center">
+	{plates.map((plate) => (
+		<div
+			id={plate.data.slug}
+			class="space-y-4 scroll-mt-20"
+			data-category-section={plate.data.slug}
+		>
+			<div class="flex flex-col flex-start gap-2 max-w-lg mx-auto text-balance">
+				<h3 class="h6 text-brand-green text-center">{plate.data.prettyName}</h3>
+				{plate.data.description && (
+					<p class="text-center text-gray-500">{plate.data.description}</p>
+				)}
+			</div>
+
+			<dl class="max-w-5xl mx-auto">
+				<div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+					{plate.data.plates.map((item) => (
+						<div class="border border-gray-200 rounded-2xl p-4 hover:shadow transition">
+							<p class="font-semibold text-lg text-brand-green">{item.name}</p>
+
+							<!-- Case 1: item has size-based pricing -->
+							{(item.small || item.medium || item.large || item.family) && (
+								<table class="mt-2 w-full text-sm">
+									<tbody>
+										{item.small && (
+											<tr>
+												<td class="text-gray-600">صغير</td>
+												<td class="text-right font-medium">
+													{new Intl.NumberFormat(siteLangFormat, {
+														style: "currency",
+														currency: siteCurrency,
+													}).format(item.small)}
+												</td>
+											</tr>
+										)}
+										{item.medium && (
+											<tr>
+												<td class="text-gray-600">وسط</td>
+												<td class="text-right font-medium">
+													{new Intl.NumberFormat(siteLangFormat, {
+														style: "currency",
+														currency: siteCurrency,
+													}).format(item.medium)}
+												</td>
+											</tr>
+										)}
+										{item.large && (
+											<tr>
+												<td class="text-gray-600">كبير</td>
+												<td class="text-right font-medium">
+													{new Intl.NumberFormat(siteLangFormat, {
+														style: "currency",
+														currency: siteCurrency,
+													}).format(item.large)}
+												</td>
+											</tr>
+										)}
+										{item.family && (
+											<tr>
+												<td class="text-gray-600">عائلي</td>
+												<td class="text-right font-medium">
+													{new Intl.NumberFormat(siteLangFormat, {
+														style: "currency",
+														currency: siteCurrency,
+													}).format(item.family)}
+												</td>
+											</tr>
+										)}
+									</tbody>
+								</table>
+							)}
+
+							<!-- Case 2: single price item -->
+							{item.price && !item.small && (
+								<p class="mt-2 font-medium text-brand-green text-lg">
+									{new Intl.NumberFormat(siteLangFormat, {
+										style: "currency",
+										currency: siteCurrency,
+									}).format(item.price)}
+								</p>
+							)}
+
+							<!-- Case 3: options list -->
+							{item.options && Array.isArray(item.options) && (
+								<ul class="mt-2 list-disc list-inside text-gray-700 text-sm space-y-1">
+									{item.options.map((opt) => (
+										<li>{opt}</li>
+									))}
+								</ul>
+							)}
+						</div>
+					))}
+				</div>
+			</dl>
+		</div>
+	))}
+</div>
+
+<script>
+	import Swiper from "swiper";
+	import "swiper/css";
+
+	document.addEventListener("astro:page-load", () => {
+		const swiperPlates = document.querySelector(".swiper-plates");
+		const swiper = new Swiper(swiperPlates, {
+			loop: false,
+			spaceBetween: 32,
+			slidesPerView: "auto",
+		});
+
+		const categoryLinks = document.querySelectorAll("[data-category-link]");
+		const categorySections = document.querySelectorAll("[data-category-section]");
+		let isNavigatingByClick = false;
+
+		function setActiveCategory(id: string) {
+			categoryLinks.forEach((link) => {
+				link.classList.remove("bg-white", "text-brand-green");
+				link.classList.add("hover:bg-white/10");
+			});
+			const currentLink = document.querySelector(`[data-category-link="${id}"]`);
+			if (currentLink) {
+				currentLink.classList.add("bg-white", "text-brand-green");
+				currentLink.classList.remove("hover:bg-white/10");
+				const index = Array.from(categoryLinks).indexOf(currentLink);
+				if (index !== -1) swiper.slideTo(index);
+			}
+		}
+
+		categoryLinks.forEach((link) => {
+			link.addEventListener("click", () => {
+				const id = link.dataset.categoryLink;
+				isNavigatingByClick = true;
+				setActiveCategory(id);
+				setTimeout(() => (isNavigatingByClick = false), 1000);
+			});
+		});
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				if (isNavigatingByClick) return;
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						const id = entry.target.dataset.categorySection;
+						setActiveCategory(id);
+					}
+				});
+			},
+			{ rootMargin: "-20% 0px -60% 0px", threshold: 0 }
+		);
+
+		categorySections.forEach((s) => observer.observe(s));
+
+		if (window.location.hash) {
+			setActiveCategory(window.location.hash.substring(1));
+		} else if (categorySections.length > 0) {
+			setActiveCategory(categorySections[0].dataset.categorySection);
+		}
+	});
+</script>
