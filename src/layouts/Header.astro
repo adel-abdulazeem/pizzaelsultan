@@ -1,0 +1,144 @@
+---
+import { menuMain } from "~/data/menus.js";
+import ButtonMap from "~/components/icons/ButtonMap.astro";
+// import { Image } from "astro:assets";
+
+// import logo from "~/assets/icons/logo.jpg";
+
+const rmTrailingSlash = (path: string): string => {
+	return path.endsWith("/") && path.length > 1
+		? path.slice(0, path.length - 1)
+		: path;
+};
+
+const pathname = rmTrailingSlash(Astro.url.pathname);
+---
+
+<header
+	x-data="{ open: false }"
+	@keydown.window.escape="open = false"
+	class="top-0 z-50 bg-white shadow"
+>
+	<div class="container py-1">
+		<nav class="flex items-center justify-between" aria-label="Global">
+			<div class="flex lg:hidden">
+				<button
+					type="button"
+					class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5"
+					@click="open = true"
+				>
+					<span class="sr-only">Open main menu</span>
+					<svg
+						class="size-10 text-brand-green cursor-pointer"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke-width="1.5"
+						stroke="currentColor"
+						aria-hidden="true"
+						data-slot="icon"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+						></path>
+					</svg>
+				</button>
+			</div>
+			<div class="hidden lg:flex lg:gap-x-12 lg:items-center">
+				{
+					menuMain.map((item) => (
+						<a
+							href={item.url}
+							class={`transition text-base/6 font-semibold hover:text-brand-green ${item.highlighted ? "menu-item-highlighted" : ""} ${pathname === item.url ? "menu-item-active" : ""}`}
+						>
+							{item.name}
+						</a>
+					))
+				}
+			</div>
+
+			<ButtonMap />
+			<a href="/">
+				<!-- <Image
+					src={logo}
+					class="rounded-full size-24"
+					alt="A description of my image."
+				/> -->
+				<p class="font-bold text-3xl text-brand-green">
+					<!-- <span class="text-brand-red bg-brand-red/5 px-3 ml-1 rounded-lg"> res</span> -->
+				</p>
+			</a>
+		</nav>
+
+		<div
+			class="lg:hidden"
+			x-ref="dialog"
+			x-show="open"
+			x-cloak
+			aria-modal="true"
+		>
+			<div
+				class="lg:hidden"
+				x-ref="dialog"
+				x-show="open"
+				x-cloak
+				aria-modal="true"
+			>
+				<div
+					class="fixed top-[0] left-1/2 transform -translate-x-1/2 z-50 w-[90%] rounded-xl shadow-lg overflow-hidden bg-gray-100 py-4 transition ease-out duration-300 border border-dashed border-neutral-300"
+					x-show="open"
+					x-transition:enter="transition ease-out"
+					x-transition:enter-start="opacity-0 scale-95"
+					x-transition:enter-end="opacity-100 scale-100"
+					x-transition:leave="transition ease-in"
+					x-transition:leave-start="opacity-100 scale-100"
+					x-transition:leave-end="opacity-0 scale-95"
+					x-cloak
+				>
+					<div class="relative flex justify-center">
+						<button
+							type="button"
+							class="absolute right-0 top-0 p-2.5 text-brand-red"
+							@click="open = false"
+						>
+							<span class="sr-only">Close menu</span>
+							<svg
+								class="size-6 cursor-pointer"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke-width="2"
+								stroke="currentColor"
+								aria-hidden="true"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									d="M6 18 18 6M6 6l12 12"></path>
+							</svg>
+						</button>
+						<div class="space-y-4 flex flex-col items-center">
+							{
+								menuMain.map((item) => (
+									<div>
+										<a
+											@click="open = false"
+											href={item.url}
+											class={`block py-2 px-4 rounded-md font-semibold text-base transition-colors duration-200 hover:bg-brand-green/10 ${
+												item.highlighted
+													? "menu-item-highlighted"
+													: ""
+											} ${pathname === item.url ? "menu-item-active" : ""}`}
+										>
+											{item.name}
+										</a>
+									</div>
+								))
+							}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>

@@ -1,0 +1,15 @@
+{
+	"extends": "astro/tsconfigs/strict",
+	"include": [".astro/types.d.ts", "**/*", "src", "tests", "vite.config.ts", "vitest.config.ts"],
+	"exclude": ["dist"],
+	"compilerOptions": {
+		"target": "ESNext",
+    	"module": "ESNext",
+		"strictNullChecks": true,
+		"allowJs": true,
+		"baseUrl": ".",
+		"paths": {
+			"~/*": ["src/*"]
+		}
+	}
+}
