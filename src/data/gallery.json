@@ -1,0 +1,26 @@
+[
+	{
+		"id": 1,
+		"title": "pic1",
+		"image": "https://res.cloudinary.com/doqqw6qp7/image/upload/v1760174598/elsultan2_pmqzad.jpg",
+		"alt": "Delicious food pic 1"
+	},
+	{
+		"id": 2,
+		"title": "pic2",
+		"image": "https://res.cloudinary.com/doqqw6qp7/image/upload/v1760175431/elsultan3_amurpr.jpg",
+		"alt": "Delicious food pic 2"
+	},
+	{
+		"id": 3,
+		"title": "pic3",
+		"image": "https://res.cloudinary.com/doqqw6qp7/image/upload/v1760175136/elsultan4_yvhkni.jpg",
+		"alt": "Delicious food pic 2"
+	},
+	{
+		"id": 4,
+		"title": "pic4",
+		"image": "https://res.cloudinary.com/doqqw6qp7/image/upload/v1760175527/elsutan5_nzifxd.jpg",
+		"alt": "Delicious food pic 2"
+	}
+]
