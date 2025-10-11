@@ -1,0 +1,31 @@
+---
+export interface Props {
+    show?: boolean;
+}
+
+const { show = true } = Astro.props;
+---
+
+{
+    show && (
+        <div
+            x-data="{ visible: true }"
+            x-show="visible"
+            x-transition
+            class="w-full bg-yellow-100 border border-yellow-300 text-yellow-900 text-center px-4 py-3 shadow-sm fixed top-0 left-0 right-0 z-50 flex items-center justify-center gap-2"
+        >
+            <p class="font-medium text-sm md:text-base leading-relaxed">
+                ⚠️ هذا الموقع في{" "}
+                <span class="font-semibold">نسخته التجريبية</span> — قد لا تكون
+                الأسعار أو المنتجات المعروضة دقيقة أو نهائية.
+            </p>
+            <button
+                @click="visible = false"
+                class="ml-3 text-yellow-700 hover:text-yellow-900 text-lg font-bold focus:outline-none"
+                aria-label="إغلاق التنبيه"
+            >
+                ×
+            </button>
+        </div>
+    )
+}
