@@ -1,0 +1,97 @@
+---
+import Layout from "~/layouts/Layout.astro";
+import Section from "~/components/Section.astro";
+import Hero from "~/components/Hero.astro";
+// import { Image } from "astro:assets";
+// import Badge from "~/components/Badge.astro";
+import Button from "~/components/Button.astro";
+import ButtonCallUs from "~/components/icons/ButtonCallUs.astro";
+import Heading from "~/components/Heading.astro";
+// import ReviewSlider from "~/components/data-display/ReviewSlider.astro";
+import PhotoCarousel from "~/components/data-display/PhotoCarousel.astro";
+
+// Images
+// import PizzaHero from "~/assets/images/gallery/pizza.jpg";
+// import reviewAuthors from "~/assets/images/review-authors.png";
+---
+
+<Layout title="Home" pageTitle="Home" description="Welcome to our restaurant!">
+	<div class="flex flex-row justify-center items-center mt-10">
+		<p class="font-bold text-3xl text-brand-green">
+			بيتزا
+			<span class="text-brand-red bg-brand-red/5 px-3 ml-1 rounded-lg"
+				>السلطان</span
+			>
+		</p>
+	</div>
+	<Section class:list={"bg-white"}>
+		<PhotoCarousel />
+		<div class="mt-8 flex items-center gap-x-8">
+			<ButtonCallUs />
+		</div>
+		<div
+			slot="hero-content-right"
+			class="rounded-lg overflow-hidden shadow-lg"
+		>
+			<img
+				class:list={"mx-auto"}
+				src="https://res.cloudinary.com/doqqw6qp7/image/upload/v1760174287/elsultan1_nbxbi8.jpg"
+				height={600}
+				alt="A description of my image."
+				loading={"eager"}
+				fetchpriority={"high"}
+			/>
+		</div>
+	</Section>
+	<Section class:list={"bg-white"}>
+		<Heading>
+			<h2 slot="heading-title" class="font-black text-brand-green h4">
+				بيتزا وفطائر السلطان مدينة نصر والتجمع ووسط البلد(شارع القصر
+				العيني)🤍
+			</h2>
+			<p slot="heading-content" class="text-right">
+				البيتزا الصح.. طعمها عندنا! 🍕🔥
+			</p>
+		</Heading>
+
+		<Section class:list={"bg-white"}>
+			<Hero>
+				<div
+					slot="hero-content-left"
+					class="prose lg:order-2 text-right"
+				>
+					<h1 class="font-black">
+						البيتزا التقليدية الإيطالية و الفطائر الشرقية
+					</h1>
+					<!-- <p>
+					</p> -->
+					<div class="mt-8">
+						<Button url="/menu">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 20 20"
+								fill="currentColor"
+								class="size-5 inline-block"
+								aria-hidden="true"
+							>
+								<path
+									fill-rule="evenodd"
+									d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z"
+									clip-rule="evenodd"></path>
+							</svg>
+							عرض القائمة
+						</Button>
+					</div>
+				</div>
+				<div slot="hero-content-right">
+					<img
+						class:list={"mx-auto rounded-lg lg:max-w-[70%] sm:max-w-[100%] md:max-w-[70%] mx-auto"}
+						src="https://res.cloudinary.com/doqqw6qp7/image/upload/v1760174287/elsultan1_nbxbi8.jpg"
+						height={600}
+						alt="A description of my image."
+					/>
+				</div>
+			</Hero>
+		</Section>
+	</Section>
+</Layout>

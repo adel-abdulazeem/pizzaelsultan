@@ -1,0 +1,28 @@
+name: promote dev to main
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0  # 👈 fetch full history, all branches
+      - name: Fetch all branches
+        run: git fetch --all  # 👈 make sure origin/dev exists locally
+
+      #promote dev to main, one-way: dev → main.
+      - name: Sync dev with main
+        run: |
+          git checkout main
+          git pull origin main
+          git merge --ff-only origin/dev
+          git push origin main
+

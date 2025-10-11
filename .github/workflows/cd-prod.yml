@@ -1,0 +1,56 @@
+name: Deploy to Netlify
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    env:
+      NODE_ENV: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+
+    environment: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
+
+    steps:
+      - name: 🧾 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🧰 Install pnpm
+        run: npm install -g pnpm
+
+      - name: 📦 Install dependencies
+        run: pnpm install
+
+      - name: 🏗️  Build project
+        run: pnpm run build
+
+      - name: Deploy to Netlify
+        run: |
+          echo "Event: ${{ github.event_name }}"
+          echo "Branch: ${{ github.ref_name }}"
+
+          if [ "${{ github.event_name == 'push' && github.ref_name }}" = "dev" ]; then
+            echo "🧩 Deploying to Staging..."
+            npx netlify deploy \
+              --auth "$NETLIFY_AUTH_TOKEN" \
+              --site "${{ secrets.NETLIFY_SITE_ID_STAGING }}" \
+              --message "Staging deploy from dev" \
+              --json
+          elif [ "${{ github.ref_name }}" = "main" ]; then
+            echo "🌍 Deploying to Production..."
+            npx netlify deploy \
+              --prod \
+              --auth "$NETLIFY_AUTH_TOKEN" \
+              --site "${{ secrets.NETLIFY_SITE_ID_PROD }}" \
+              --message "Production deploy from main" \
+              --json
+          else
+            echo "⚠️ Skipping deploy — no matching environment."
+            exit 0
+          fi
+          
+      - name: ✅ Post-deploy confirmation
+        run: echo "✅ Deployment complete for ${{ github.ref_name }}"
