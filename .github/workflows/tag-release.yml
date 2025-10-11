@@ -1,0 +1,56 @@
+name: Tag Production Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version (optional — leave blank for auto)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Configure Git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch all branches
+        run: git fetch --all
+
+      - name: Checkout main
+        run: |
+          git checkout main
+          git pull origin main
+
+      - name: Tag Release
+        id: tag
+        run: |
+          if [ -n "${{ github.event.inputs.version }}" ]; then
+            version="${{ github.event.inputs.version }}"
+          else
+            version="v$(date +'%Y.%m.%d.%H%M')"
+          fi
+          echo "version=$version" >> $GITHUB_OUTPUT
+          echo "🚀 Creating tag: $version"
+          git tag "$version"
+          git push origin "$version"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.version }}
+          name: "Release ${{ steps.tag.outputs.version }}"
+          body: |
+            Automated production release from main branch.

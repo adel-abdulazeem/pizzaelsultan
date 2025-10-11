@@ -1,0 +1,61 @@
+name: promote dev to main
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0  # 👈 fetch full history, all branches
+      - name: Fetch all branches
+        run: git fetch --all  # 👈 make sure origin/dev exists locally
+
+      #promote dev to main, one-way: dev → main.
+      - name: Configure Git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+      - name: Fetch all branches
+        run: git fetch --all
+        
+      - name: Unprotect dev branch
+        run: |
+          curl -X DELETE \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.ADMIN_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/branches/dev/protection
+
+      - name: Unprotect dev branch
+        run: |
+          curl -X DELETE \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.ADMIN_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/branches/dev/protection
+
+      - name: Realign Dev → Main
+        run: |
+          git checkout dev
+          git reset --hard origin/main
+          git push --force-with-lease origin dev
+
+      - name: Re-protect dev branch
+        run: |
+          curl -X PUT \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.ADMIN_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/branches/dev/protection \
+            -d '{
+              "required_status_checks": null,
+              "enforce_admins": false,
+              "required_pull_request_reviews": null,
+              "restrictions": null
+            }'
