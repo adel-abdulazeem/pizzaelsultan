@@ -1,0 +1,46 @@
+name: Deploy Preview
+on:
+  pull_request:
+    branches: [dev]
+
+jobs:
+  preview-deploy:
+    runs-on: ubuntu-latest
+    env:
+      NODE_ENV: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      
+    environment: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
+
+    steps:
+      - name: 🧾 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🧰 Install pnpm
+        run: npm install -g pnpm
+
+      - name: 📦 Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 🏗️ Build project
+        run: pnpm run build
+
+      - name: 🚀 Deploy to Netlify
+        run: |
+          echo "Event: ${{ github.event_name }}"
+          echo "Branch: ${{ github.ref_name }}"
+
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "🧪 Preview deploy for PR #${{ github.event.pull_request.number }} → dev branch"
+            npx netlify deploy \
+              --auth "$NETLIFY_AUTH_TOKEN" \
+              --site "${{ secrets.NETLIFY_SITE_ID_STAGING }}" \
+              --message "Preview for PR #${{ github.event.pull_request.number }}" \
+              --json
+          else
+            echo "⚠️ Skipping deploy — no matching environment."
+            exit 0
+          fi
+
+      - name: ✅ Preview Post-deploy confirmation
+        run: echo "✅ Preview Deployment complete for ${{ github.ref_name }}"
