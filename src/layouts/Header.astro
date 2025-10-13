@@ -14,13 +14,13 @@ const rmTrailingSlash = (path: string): string => {
 const pathname = rmTrailingSlash(Astro.url.pathname);
 ---
 
-<header x-data="{ open: false }" @keydown.window.escape="open = false">
+<header
+	x-data="{ open: false }"
+	@keydown.window.escape="open = false"
+	class="top-0 z-50 bg-white shadow"
+>
 	<div class="container py-1">
-		<nav
-			class="flex items-center justify-between border-b-2 border-gray-300 border-solid
-            hover:border-b-1 hover:border-green-500"
-			aria-label="Global"
-		>
+		<nav class="flex items-center justify-between" aria-label="Global">
 			<div class="flex lg:hidden">
 				<button
 					type="button"
