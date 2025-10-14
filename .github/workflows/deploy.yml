@@ -1,0 +1,28 @@
+name: CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t my-app .
+
+      - name: Push to Registry
+        run: |
+          docker tag my-app ghcr.io/<your-org>/my-app:latest
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u USERNAME --password-stdin
+          docker push ghcr.io/<your-org>/my-app:latest
+
+      - name: Deploy to server
+        run: |
+          ssh user@server "docker pull ghcr.io/<your-org>/my-app:latest && docker-compose up -d"
