@@ -2,35 +2,30 @@
 import Layout from "~/layouts/Layout.astro";
 import Section from "~/components/Section.astro";
 import Hero from "~/components/Hero.astro";
+import { Picture } from "astro:assets";
 import Badge from "~/components/Badge.astro";
 import Button from "~/components/Button.astro";
 import ButtonCallUs from "~/components/icons/ButtonCallUs.astro";
 import Article from "~/components/Article.astro";
 
 // Images
+import PizzaHero from "~/assets/images/pizza-hero.png";
 ---
 
 <Layout>
 	<Section class:list={"bg-white"}>
 		<Hero>
-			<div
-				slot="hero-content-left"
-				class="prose max-w-none max-lg:order-1"
-			>
+			<div slot="hero-content-left" class="prose max-w-none max-lg:order-1">
 				<Badge title="il ristorante italiana" />
-				<h1 class="font-black"></h1>
+				<h1 class="font-black">Real Italian food in a real Italian restaurant...</h1>
 
 				<p>
-					Experience the taste of Italy with our authentic dishes made
-					from the finest ingredients. Indulge in our wide variety of
-					pizzas, pastas, and desserts, all crafted with love and
-					tradition. Whether you're dining in or taking out, we
-					promise a memorable culinary experience.
+					Experience the taste of Italy with our authentic dishes made from the finest ingredients. Indulge in
+					our wide variety of pizzas, pastas, and desserts, all crafted with love and tradition. Whether
+					you're dining in or taking out, we promise a memorable culinary experience.
 				</p>
 
-				<span class="text-brand-green font-medium"
-					>✔ We also deliver</span
-				>
+				<span class="text-brand-green font-medium">✔ We also deliver</span>
 
 				<div class="mt-8 flex items-center gap-x-8">
 					<Button url="/book">Book now</Button>
@@ -38,7 +33,7 @@ import Article from "~/components/Article.astro";
 				</div>
 			</div>
 			<div slot="hero-content-right">
-				<!-- <Picture
+				<Picture
 					class:list={"mx-auto"}
 					src={PizzaHero}
 					height={600}
@@ -46,14 +41,14 @@ import Article from "~/components/Article.astro";
 					alt="A description of my image."
 					loading={"eager"}
 					fetchpriority={"high"}
-				/> -->
+				/>
 			</div>
 		</Hero>
 	</Section>
 
-	<Section class:list={"bg-white"}>
+	<Section class:list={'bg-white'}>
 		<Article>
-			<!-- <h2>Welcome to AstroPie</h2>
+			<h2>Welcome to AstroPie</h2>
 			<p>
 				Nestled in the heart of the city, <strong>AstroPie</strong> offers an authentic Italian dining experience
 				like no other. From the moment you step through our doors, you'll be transported to the vibrant streets of
@@ -87,7 +82,7 @@ import Article from "~/components/Article.astro";
 				Whether you're celebrating a special occasion or simply indulging in the pleasures of Italian cuisine, <strong
 					>AstroPie</strong
 				> is the perfect destination. <em>Come for the food, stay for the memories.</em>
-			</p> -->
+			</p>
 		</Article>
 	</Section>
 </Layout>

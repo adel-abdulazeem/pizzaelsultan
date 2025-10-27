@@ -1,5 +1,5 @@
-export const menuMain = [
-
+export const menuMain = [ 
+    
     {
         name: "الرئيسية",
         url: "/",
