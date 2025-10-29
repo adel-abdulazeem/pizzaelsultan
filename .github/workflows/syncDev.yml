@@ -4,6 +4,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+
 jobs:
   sync:
     runs-on: ubuntu-latest
@@ -11,9 +14,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Sync dev with main
         run: |
           git fetch origin
-          git checkout dev
-          git merge --ff-only origin/main || git reset --hard origin/main
-          git push origin dev
+          git checkout dev || git checkout -b dev origin/dev
+          git reset --hard origin/main
+          git push origin dev --force
