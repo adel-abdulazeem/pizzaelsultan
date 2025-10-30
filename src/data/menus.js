@@ -1,5 +1,5 @@
-export const menuMain = [ 
-    
+export const menuMain = [
+
     {
         name: "الرئيسية",
         url: "/",
@@ -8,11 +8,6 @@ export const menuMain = [
     {
         name: "المنيو",
         url: "/menu",
-        highlighted: false,
-    },
-    {
-        name: "قصتنا",
-        url: "/about",
         highlighted: false,
     }
 ];
