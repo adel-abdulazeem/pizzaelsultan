@@ -15,9 +15,11 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      #promote dev to main, one-way: dev → main.
       - name: Sync dev with main
         run: |
-          git fetch origin
-          git checkout dev || git checkout -b dev origin/dev
-          git reset --hard origin/main
-          git push origin dev --force
+          git checkout main
+          git pull origin main
+          git merge --ff-only origin/dev
+          git push origin main
+
