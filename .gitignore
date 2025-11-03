@@ -26,9 +26,6 @@ pnpm-debug.log*
 # vscode setting folder
 .vscode/
 
-# readme
-README.md
-
 
 coverage/
 
