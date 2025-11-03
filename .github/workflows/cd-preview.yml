@@ -1,0 +1,25 @@
+name: Deploy Preview
+on:
+  pull_request:
+    branches: [dev, main]
+
+jobs:
+  preview-deploy:
+    runs-on: ubuntu-latest
+    
+    environment: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build project
+        run: pnpm run build
+
+      - name: Deploy to Netlify
+        run: npx netlify deploy --prod --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --site ${{ secrets.NETLIFY_SITE_ID }}
