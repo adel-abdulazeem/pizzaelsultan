@@ -15,9 +15,18 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
-      - run: |
+                
+      - name: Configure Git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Fetch and Sync
+        run: |
           git fetch --all
           git checkout dev
           git pull origin dev
-          git merge origin/main
+          git merge --ff-only origin/main || {
+            echo "⚠️ Cannot fast-forward dev. Please rebase manually if needed."
+            exit 1
+          }
           git push origin dev

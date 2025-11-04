@@ -19,14 +19,18 @@ jobs:
         run: git fetch --all  # 👈 make sure origin/dev exists locally
 
       #promote dev to main, one-way: dev → main.
-      - name: Promote dev with main
+      - name: Configure Git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Fetch all branches
+        run: git fetch --all
+      - name: Promote Dev → Main
         run: |
           git checkout main
           git pull origin main
           git merge --ff-only origin/dev || {
             echo "❌ Fast-forward merge failed — branches have diverged."
-            echo "Ensure no direct commits to main. If necessary, run 'sync-main-back.yml'."
             exit 1
           }
           git push origin main
-
