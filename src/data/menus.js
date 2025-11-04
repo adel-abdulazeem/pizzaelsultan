@@ -11,8 +11,13 @@ export const menuMain = [
         highlighted: false,
     },
     {
+        name: "حجز",
+        url: "/book",
+        highlighted: false,
+    },
+    {
         name: "قصتنا",
-        url: "/menu",
+        url: "/about",
         highlighted: false,
     }
 ];
