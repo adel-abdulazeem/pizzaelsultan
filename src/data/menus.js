@@ -9,17 +9,17 @@ export const menuMain = [
         name: "المنيو",
         url: "/menu",
         highlighted: false,
-    },
-    {
-        name: "حجز",
-        url: "/book",
-        highlighted: false,
-    },
-    {
-        name: "قصتنا",
-        url: "/about",
-        highlighted: false,
     }
+    // {
+    //     name: "حجز",
+    //     url: "/book",
+    //     highlighted: false,
+    // },
+    // {
+    //     name: "قصتنا",
+    //     url: "/about",
+    //     highlighted: false,
+    // }
 ];
 
 export const footerPrimary = [
