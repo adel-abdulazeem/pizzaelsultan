@@ -9,6 +9,11 @@ export const menuMain = [
         name: "المنيو",
         url: "/menu",
         highlighted: false,
+    },
+    {
+        name: "قصتنا",
+        url: "/menu",
+        highlighted: false,
     }
 ];
 
