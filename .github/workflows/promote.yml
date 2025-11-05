@@ -34,3 +34,9 @@ jobs:
             exit 1
           }
           git push origin main
+          
+      - name: Tag Release
+        run: |
+          version="v$(date +'%Y.%m.%d.%H%M')"
+          git tag "$version"
+          git push origin "$version"
