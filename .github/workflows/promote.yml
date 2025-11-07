@@ -23,23 +23,9 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
       - name: Fetch all branches
         run: git fetch --all
-      # - name: Promote Dev → Main
-      #   run: |
-      #     git checkout main
-      #     git pull origin main
-      #     git merge --ff-only origin/dev || {
-      #       echo "❌ Fast-forward merge failed — branches have diverged."
-      #       exit 1
-      #     }
-      #     git push origin main
-          
-      - name: Tag Release
-        run: |
-          version="v$(date +'%Y.%m.%d.%H%M')"
-          git tag "$version"
-          git push origin "$version"
 
       - name: Realign Dev → Main
         run: |
