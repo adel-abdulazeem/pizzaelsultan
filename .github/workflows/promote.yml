@@ -26,7 +26,7 @@ jobs:
           
       - name: Fetch all branches
         run: git fetch --all
-
+        
       - name: Unprotect dev branch
         run: |
           curl -X DELETE \
