@@ -15,11 +15,11 @@ export const menuMain = [
         url: "/book",
         highlighted: false,
     },
-    {
-        name: "قصتنا",
-        url: "/about",
-        highlighted: false,
-    }
+    // {
+    //     name: "قصتنا",
+    //     url: "/about",
+    //     highlighted: false,
+    // }
 ];
 
 export const footerPrimary = [
